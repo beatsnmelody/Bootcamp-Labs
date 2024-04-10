@@ -19,36 +19,31 @@ public class Main {
 
         System.out.println("""
                 Now, choose what you want to do!
-                (A)ddition
-                (S)ubtraction
-                (M)ultiplication
-                (D)ivision
+                Addition
+                Subtraction
+                Multiplication
+                Division
                 """);
 
+        scanner.nextLine();
         String operation = scanner.nextLine();
 
-        String addition = "Addition";
-
-
-        double resultA = firstNumber + secondNumber;
-
-        double resultS = firstNumber - secondNumber;
-
-        double resultM = firstNumber * secondNumber;
-
-        double resultD = firstNumber / secondNumber;
-
             switch (operation) {
-                case :
-                    System.out.printf("f% + f%", firstNumber, secondNumber);
-                case :
-                    System.out.printf("f% - f%", firstNumber, secondNumber);
-                case M:
-                    System.out.printf("f% * f%", firstNumber, secondNumber);
-                case D:
-                    System.out.printf("f% / f%", firstNumber, secondNumber);
+                case "Addition":
+                    System.out.println(firstNumber + secondNumber);
+                    break;
+                case "Subtraction":
+                    System.out.println(firstNumber - secondNumber);
+                    break;
+                case "Multiplication":
+                    System.out.println(firstNumber * secondNumber);
+                    break;
+                case "Division":
+                    System.out.println(firstNumber / secondNumber);
+                    break;
                 default:
                     System.out.println("Now, I can't do anything with that!");
+                    break;
             }
 
     }

@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Welcome! This is the car rentals department. \n If you're interested in renting a car,complete the form below and we'll have a price for you!");
+        System.out.println("Welcome! This is the car rentals department.\nIf you're interested in renting a car, complete the form below and we'll have a price for you!");
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("When will you pick up the car?");
@@ -30,14 +30,14 @@ public class Main {
         System.out.println("How many days will you rent?");
         int numberOfRentDays = scanner.nextInt();
 
-        System.out.println("Do you want a toll tag?");
-        boolean hasTollTag = scanner.nextBoolean();
+        System.out.println("Do you want a toll tag? (Y)es/(N)o");
+        boolean hasTollTag = scanner.next().equalsIgnoreCase("y");
 
-        System.out.println("Do you want a GPS device?");
-        boolean hasGPS = scanner.nextBoolean();
+        System.out.println("Do you want a GPS device? (Y)es/(N)o");
+        boolean hasGPS = scanner.next().equalsIgnoreCase("y");
 
-        System.out.println("Do you want roadside assistance?");
-        boolean hasRoadAssistance = scanner.nextBoolean();
+        System.out.println("Do you want roadside assistance? (Y)es/(N)o");
+        boolean hasRoadAssistance = scanner.next().equalsIgnoreCase("y");
 
         System.out.println("How old are you?");
         int currentAge = scanner.nextInt();
@@ -51,11 +51,15 @@ public class Main {
 
         double optionsCost = 0.0;
         if (hasTollTag){
-            optionsCost = 3.95 * (double) numberOfRentDays;
-        } else if (hasGPS) {
-            optionsCost = 2.95 * (double) numberOfRentDays;
-        } else if (hasRoadAssistance){
-            optionsCost = 3.95 * (double) numberOfRentDays;
+            optionsCost += 3.95 * (double) numberOfRentDays;
+        }
+
+        if (hasGPS) {
+            optionsCost += 2.95 * (double) numberOfRentDays;
+        }
+
+        if (hasRoadAssistance){
+            optionsCost += 3.95 * (double) numberOfRentDays;
         }
 
         double totalCost = carRentalCharge + optionsCost;

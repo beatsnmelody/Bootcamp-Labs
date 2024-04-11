@@ -30,21 +30,45 @@ public class Main {
 
             switch (operation) {
                 case "Addition":
-                    System.out.println(firstNumber + secondNumber);
+                    double sum = addTwoNumbers(firstNumber, secondNumber);
+                    System.out.println("The sum is: " + sum);
                     break;
                 case "Subtraction":
-                    System.out.println(firstNumber - secondNumber);
+                    double difference = subtractTwoNumbers(firstNumber, secondNumber);
+                    System.out.println("The difference is: " + difference);
                     break;
                 case "Multiplication":
-                    System.out.println(firstNumber * secondNumber);
+                    double product = multiplyTwoNumbers(firstNumber, secondNumber);
+                    System.out.println("The product is: " + product);
                     break;
                 case "Division":
-                    System.out.println(firstNumber / secondNumber);
+                    double quotient = divideTwoNumbers(firstNumber, secondNumber);
+                    System.out.println("The quotient is: " + quotient);
                     break;
                 default:
                     System.out.println("Now, I can't do anything with that!");
                     break;
             }
 
+    }
+
+    public static double addTwoNumbers(double firstNumber, double secondNumber){
+        double sum = firstNumber + secondNumber;
+        return sum;
+    }
+
+    public static double subtractTwoNumbers(double firstNumber, double secondNumber){
+        double difference = firstNumber - secondNumber;
+        return difference;
+    }
+
+    public static double multiplyTwoNumbers(double firstNumber, double secondNumber){
+        double product = firstNumber * secondNumber;
+        return product;
+    }
+
+    public static double divideTwoNumbers(double firstNumber, double secondNumber){
+        double quotient = firstNumber / secondNumber;
+        return quotient;
     }
 }

@@ -105,8 +105,27 @@ public class Main {
 
             case "ANNUITY":
                 //have user input data
+
+                System.out.println("What will be the monthly payout amount of the annuity?");
+                double aMonthlyPayout = input.nextDouble();
+
+                System.out.println("What will be your expected interest rate?");
+                double aInterestRate = input.nextDouble();
+
+                System.out.println("How many years will it take you to pay out?");
+                int aTermInYears = input.nextInt();
+
                 //return present value of annuity function
-                //break
+
+                double presentValue = annuityPresentValue(aMonthlyPayout, aInterestRate, aTermInYears);
+
+                System.out.println(userName + ", the present value of your annuity will be: " + presentValue);
+
+                break;
+
+            default:
+                System.out.println("Sorry, that isn't an option.");
+                break;
         }
 
     }
@@ -151,5 +170,17 @@ public class Main {
         double totalInterestCDResult = futureValue - cdInitialValue;
 
         return totalInterestCDResult;
+    }
+
+    public static double annuityPresentValue(double aMonthlyPayout, double aInterestRate, double aTermInYears){
+
+        double aMonthlyInterestRate = (aInterestRate / 12) / 100;
+        double aTotalMonthlyPayments = aTermInYears * 12;
+
+        double onePlusaMonthlyInterestRate = Math.pow(1 + aMonthlyInterestRate, aTotalMonthlyPayments * -1);
+
+        double presentValue = aMonthlyPayout * ((1 - onePlusaMonthlyInterestRate) / aMonthlyInterestRate);
+
+        return presentValue;
     }
 }

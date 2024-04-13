@@ -143,11 +143,8 @@ public class Main {
     public static double mortgageTotalInterest(double mPrincipalAmount, double mInterestRate, double mTermInYears){
 
         double mTermInMonths = mTermInYears * 12;
-        double mMonthlyInterestRate = (mInterestRate / 12) / 100;
 
-        double mMonthlyPayment = mPrincipalAmount * (((mMonthlyInterestRate * Math.pow(1 + mMonthlyInterestRate, mTermInMonths))) /  ((Math.pow((1 + mMonthlyInterestRate), mTermInMonths)) - 1));
-
-        double mTotalInterest = (mMonthlyPayment * mTermInMonths) - mPrincipalAmount;
+        double mTotalInterest = (mortgageMonthlyPayment(mPrincipalAmount, mInterestRate, mTermInYears) * mTermInMonths) - mPrincipalAmount;
 
         return mTotalInterest;
     }
@@ -163,11 +160,7 @@ public class Main {
 
     public static double cdTotalInterest(double cdInitialValue, double cdInterestRate, double cdTermInYears){
 
-        double cdDecimalInterestRate = cdInterestRate / 100;
-
-        double futureValue = cdInitialValue * Math.pow((1 + cdDecimalInterestRate / 365), (365 * cdTermInYears));
-
-        double totalInterestCDResult = futureValue - cdInitialValue;
+        double totalInterestCDResult = cdFutureValue(cdInitialValue, cdInterestRate, cdTermInYears) - cdInitialValue;
 
         return totalInterestCDResult;
     }

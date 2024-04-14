@@ -78,7 +78,7 @@ public class Main {
                 double mMonthlyPayment = mortgageMonthlyPayment(mPrincipalAmount, mInterestRate, mTermInYears);
                 double mTotalInterest = mortgageTotalInterest(mPrincipalAmount, mInterestRate, mTermInYears);
 
-                System.out.println(userName + ", the amount you will pay each month is: " + mMonthlyPayment + ", and your total interest on the loan will be: " + mTotalInterest);
+                System.out.printf("%s, the amount you will pay each month is: %.2f, and your total interest on the loan will be: %.2f", userName, mMonthlyPayment, mTotalInterest);
 
                 break;
 
@@ -99,7 +99,7 @@ public class Main {
                 double futureValue = cdFutureValue(cdInitialValue, cdInterestRate, cdTermInYears);
                 double totalInterestCDResult = cdTotalInterest(cdInitialValue, cdInterestRate, cdTermInYears);
 
-                System.out.println(userName + ", the future value of your CD will be: " + futureValue + ", and your total interest earned will be: " + totalInterestCDResult);
+                System.out.printf("%s, the future value of your CD will be: %.2f, and your total interest earned will be: %.2f", userName, futureValue, totalInterestCDResult);
 
                 break;
 
@@ -119,7 +119,7 @@ public class Main {
 
                 double presentValue = annuityPresentValue(aMonthlyPayout, aInterestRate, aTermInYears);
 
-                System.out.println(userName + ", the present value of your annuity will be: " + presentValue);
+                System.out.printf("%s, the present value of your annuity will be: %.2f", userName, presentValue);
 
                 break;
 

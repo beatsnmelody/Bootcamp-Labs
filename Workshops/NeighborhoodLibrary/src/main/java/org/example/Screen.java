@@ -63,7 +63,7 @@ import java.util.Scanner;
 
 public class Screen {
 
-    //this is the array of all books in the library
+    //this is the array of all 20 books in the library
     //available books have 5 filled out parameters, while checked out books have 6
     Book[] inventoryOfBooks = {
             new Book(0,
@@ -108,10 +108,75 @@ public class Screen {
                     "Toilet In Wonderland",
                     "This story follows a girl named Mira, \nwho explores an imaginary world created by her constipation. \nWhat will happen as her constipation levels lower? \nFind out now!",
                     true,
-                    "Jimbo Beans")
+                    "Jimbo Beans"),
+            new Book(8,
+                    "978-1-376-88653-5",
+                    "The History Of Emoticons",
+                    "From the original smiley face emoticon, :-), \nto the modern day emoticons known as emojis, \nthis is a thorough history of the funny faces \nthat brighten up our texts.",
+                    false),
+            new Book(9,
+                    "978-1-467-56798-0",
+                    "Shadowtown",
+                    "Cadcide, an elite member of a militaristic cult, \nmanages to slip away after their community \nis raided by authorities. Now a fugitive, \nhe becomes a detective in the shadiest part of town.",
+                    true,
+                    "Sim Salabim"),
+            new Book(10,
+                    "978-1-623-83939-7",
+                    "A List Of Blender Shortcuts",
+                    "This is a thorough list of all the shortcuts used \nin the free 3D modeling software, Blender. \nSomehow, the developers of blender made so \nmay shortcuts that it takes 300 pages to list them.",
+                    false),
+            new Book(11,
+                    "978-1-902-56782-4",
+                    "Psycho Angels",
+                    "When three angels are banished from heaven, \nthey go CRAZY! Watch as these fallen guardians as \nthey make their way back to the pearly gates, \ngunning down all who stand in their way!",
+                    false),
+            new Book(12,
+                    "978-1-578-52763-5",
+                    "The Red Strings Of Fate's Puppet",
+                    "One day, a puppet with red strings wanders \nout from their creator's humble abode. \nTurns out, they have an innate ability to be a matchmaker! \nWill this puppet get two soulmates together?",
+                    false),
+            new Book(13,
+                    "978-1-639-04874-8",
+                    "The Barterer",
+                    "One day, you wake up in a strange land, \nlosing all of your memories in the process. \nWander through the land of Polyphyl and talk to people \nas you gain your memories back.",
+                    true,
+                    "Alfonso Rye"),
+            new Book(14,
+                    "978-1-798-73893-5",
+                    "The Lore Of Five Nights At Freddy's",
+                    "This is a brilliant retrospective on the lore of \nFive Nights At Freddy's. Not only does \nthis book cover the lore in all of the games, \nbut it also covers fan theories.",
+                    false),
+            new Book(15,
+                    "978-1-035-72829-3",
+                    "I Dream Of Jinni",
+                    "A girl with a wish and a dream has a chance \nencounter with a genie named Jinni. \nWill her wishes and dreams be granted, \nor will they fail to come to fruition?",
+                    false),
+            new Book(16,
+                    "978-1-274-82190-0",
+                    "The Dead Stare In My Bathroom",
+                    "As the clock ticks, the eyes continue to stare. \nThree months ago, they have invaded this room. \nWhere did they come from? \nWhat did I do to deserve this?",
+                    false),
+            new Book(17,
+                    "978-1-473-09292-8",
+                    "My Life As a Web Developer",
+                    "Want to know how I became successful in \nthe wonderful field of web dev? \nWell, scratch that record and freeze that frame, \nbecause I'll tell you how I started off!",
+                    true,
+                    "Alexandra Labaisse"),
+            new Book(18,
+                    "978-1-829-09280-2",
+                    "Kindergarten Cop 2",
+                    "This was a movie that somehow became a book. \nThe direct to video goodness is still intact, \nbeginning to end! Watch as two \nkindergarteners arrest grown-ups.",
+                    false),
+            new Book(19,
+                    "978-1-763-53840-9",
+                    "The Last Dance",
+                    "As a loving couple is threatened by the hands \nof fate, they dance for one last time. \nWill this be their last breath as well?",
+                    false)
 
     };
 
+    //loops through all available books and checks if they're checked in or not
+    //takes in a boolean so that the program can only display books that are checked in or checked out, respectively
     public void loopBooks(boolean bookStatus){
 
         boolean checkedOut = true;
@@ -133,7 +198,8 @@ public class Screen {
 
     }
 
-
+    //enables user to view the description of an available book based on user's integer (bookId) input
+    //also enables user to go back to the home screen by typing 100
     public void viewAvailableBookDescription(){
 
         boolean checkedOut = false;
@@ -148,7 +214,7 @@ public class Screen {
 
                 if (bookDescriptInput >= 0 && bookDescriptInput < inventoryOfBooks.length && inventoryOfBooks[bookDescriptInput].isCheckedOut() == checkedOut){
 
-                    System.out.println("ID: " + inventoryOfBooks[bookDescriptInput].getId() + " Title: " + inventoryOfBooks[bookDescriptInput].getTitle() + " ISBN: " + inventoryOfBooks[bookDescriptInput].getIsbn() + " \n" + inventoryOfBooks[bookDescriptInput].getDescription());
+                    System.out.println("ID: " + inventoryOfBooks[bookDescriptInput].getId() + " | Title: " + inventoryOfBooks[bookDescriptInput].getTitle() + " | ISBN: " + inventoryOfBooks[bookDescriptInput].getIsbn() + " \n" + inventoryOfBooks[bookDescriptInput].getDescription());
                     break;
 
                 }else if (bookDescriptInput == 100){
@@ -168,7 +234,56 @@ public class Screen {
 
     }
 
-    public void viewCheckedOutBook(){
+    //enables a user to check out a book by entering their name and the book's id
+    //returns error message if book id is invalid
+    public void checkOutBook(){
+
+        boolean checkedOut = true;
+
+        for(Book ignored: inventoryOfBooks){
+
+            Scanner userInput = new Scanner(System.in);
+
+            System.out.println("Enter your name and the ID of the book you want to check out:");
+
+            String userName = userInput.nextLine();
+
+            int bookIdInput = userInput.nextInt();
+            userInput.nextLine();
+
+            if (bookIdInput >= 0 && bookIdInput < inventoryOfBooks.length && inventoryOfBooks[bookIdInput].isCheckedOut() != checkedOut) {
+
+                System.out.println("Check out this book? (Y)es/(N)o");
+
+                String checkOutBookInput = userInput.nextLine();
+
+                switch (checkOutBookInput.toUpperCase()) {
+                    case "Y":
+                        inventoryOfBooks[bookIdInput].setCheckedOut(true);
+                        inventoryOfBooks[bookIdInput].setCheckedOutTo(userName);
+                        System.out.println("Nice! You, " + userName + ", checked out that book!");
+                        homeScreen(true);
+                        break;
+                    case "N":
+                        availableBooksScreen(true);
+                        break;
+                    default:
+                        System.out.println("That's not an option, buddy, so try again!");
+                        availableBooksScreen(true);
+                        break;
+                }
+            }else{
+                System.out.println("Whoops, that book is already checked out, or it doesn't exist!");
+                availableBooksScreen(true);
+                break;
+            }
+
+        }
+    }
+
+    //enables user to check in a checked out book by entering a book's given id
+    //returns error message if book id is invalid
+    public void checkInBook(){
 
         boolean checkedOut = true;
 
@@ -184,16 +299,18 @@ public class Screen {
             if (checkedOutBookInput >= 0 && checkedOutBookInput < inventoryOfBooks.length && inventoryOfBooks[checkedOutBookInput].isCheckedOut() == checkedOut){
 
                 System.out.println("ID: " + inventoryOfBooks[checkedOutBookInput].getId() + " Title: " + inventoryOfBooks[checkedOutBookInput].getTitle() + " ISBN: " + inventoryOfBooks[checkedOutBookInput].getIsbn() + " \n" + inventoryOfBooks[checkedOutBookInput].getDescription());
-                System.out.println("\nCheck out this book? (Y)es/(N)o");
+                System.out.println("\nCheck in this book? (Y)es/(N)o");
 
                 String confirmInput = userInput.nextLine();
 
-                switch (confirmInput){
+                switch (confirmInput.toUpperCase()){
                     case "Y":
-                        System.out.println("lol");
+                        inventoryOfBooks[checkedOutBookInput].setCheckedOut(false);
+                        System.out.println("Nice! You checked in that book!");
+                        homeScreen(true);
                         break;
                     case "N":
-                        viewCheckedOutBook();
+                        checkedOutBooksScreen(true);
                         break;
                     default:
                         System.out.println("That's not an option, buddy, so try again!");
@@ -210,7 +327,7 @@ public class Screen {
 
             }else{
 
-                System.out.println("That's not an option, buddy, so try again!");
+                System.out.println("Whoops, that book is already checked in, or it doesn't exist!");
                 checkedOutBooksScreen(true);
                 break;
 
@@ -220,14 +337,15 @@ public class Screen {
 
     }
 
-
+    //displays the home screen
+    //takes in a boolean for easier startup and navigation between screens
     public void homeScreen(boolean isEnabled){
 
         while (isEnabled) {
 
             Scanner userInput = new Scanner(System.in);
 
-            System.out.println("--------------Home Screen---------------");
+            System.out.println(" \n--------------Home Screen---------------");
             System.out.println("Welcome to great library of gags and geniuses! \nHow do you do?");
             System.out.println("""
                     1) Show Available Books
@@ -258,6 +376,8 @@ public class Screen {
 
     }
 
+    //displays all available books
+    //takes in a boolean for easier navigation between screens
     public void availableBooksScreen(boolean isEnabled){
 
         while (isEnabled) {
@@ -283,7 +403,7 @@ public class Screen {
 
             switch (availBooksInput.toUpperCase()) {
                 case "C":
-                    System.out.println("ur a nerd lol");
+                    checkOutBook();
                     break;
                 case "L":
                     availableBooksScreen(true);
@@ -302,6 +422,8 @@ public class Screen {
 
     }
 
+    //displays all checked out books
+    //takes in a boolean for easier navigation between screens
     public void checkedOutBooksScreen(boolean isEnabled){
 
         while (isEnabled) {
@@ -325,7 +447,7 @@ public class Screen {
 
             switch (checkedOutBooksInput.toUpperCase()){
                 case "C":
-                    viewCheckedOutBook();
+                    checkInBook();
                     break;
                 case "L":
                     checkedOutBooksScreen(true);

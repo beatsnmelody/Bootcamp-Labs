@@ -2,11 +2,9 @@ package org.example;
 
 //Five properties must be listed: id (int), isbn (string), title (string), isCheckedOut (boolean), checkedOutTo (string)
 //To add some extra spice...bookDescription (string)
-//We need four constructors:
+//We need two constructors:
 //one that takes in all 6 parameters
-//one that takes in 3 (excluding isCheckedOut, description and checkedOutTo)
-//one that takes title, id, and description
-//one that takes in everything except for description
+//one that takes in everything except for checkedOutTo
 //and getters and setters for each one of the 6 parameters
 //also two methods:
 //checkOut (name) and checkIn ()/(id perhaps?)

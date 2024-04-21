@@ -58,8 +58,13 @@ import java.util.Scanner;
 
 //use System.exit(0) to exit the program
 
+//Note:
+//rough psuedocode is above, and final psuedocode is below!
+
 public class Screen {
 
+    //this is the array of all books in the library
+    //available books have 5 filled out parameters, while checked out books have 6
     Book[] inventoryOfBooks = {
             new Book(0,
             "978-1-928-63789-9",
@@ -86,18 +91,67 @@ public class Screen {
 
     };
 
+    public void loopBooks(boolean bookStatus){
 
-    public void loopBooks(boolean checkedOut){
+        boolean checkedOut = true;
 
         for(Book book : inventoryOfBooks){
 
-        if (book.isCheckedOut() && checkedOut){
-            book.setCheckedOut(true);
-            System.out.println(book.getTitle() + book.getId() + book.getCheckedOutTo());
-         }else{
-            book.setCheckedOut(false);
-            System.out.println(book.getTitle() + book.getId());
-         }
+                if (book.isCheckedOut() != checkedOut && !bookStatus){
+
+                    System.out.println(book.getId() + " " + book.getTitle());
+
+                }else if (book.isCheckedOut() == checkedOut && bookStatus){
+
+                    System.out.println(book.getId() + " " + book.getTitle() + " " + book.getCheckedOutTo());
+
+                }
+
+
+        }
+
+    }
+
+
+    public void viewAvailableBookDescription(){
+
+        boolean checkedOut = false;
+
+        for(Book ignored : inventoryOfBooks){
+
+            Scanner userInput = new Scanner(System.in);
+
+            System.out.println("\nSo...do you want to take a closer look at one of our fine entries? \n(Hint: Enter the book ID to view the book description, or type in 100 to go back to all available books!)");
+
+            int bookDescriptInput = userInput.nextInt();
+
+                if (bookDescriptInput >= 0 && bookDescriptInput < inventoryOfBooks.length && inventoryOfBooks[bookDescriptInput].isCheckedOut() == checkedOut){
+
+                    System.out.println("ID: " + inventoryOfBooks[bookDescriptInput].getId() + " Title: " + inventoryOfBooks[bookDescriptInput].getTitle() + " ISBN: " + inventoryOfBooks[bookDescriptInput].getIsbn() + " \n" + inventoryOfBooks[bookDescriptInput].getDescription());
+                    break;
+
+                }else if (bookDescriptInput == 100){
+
+                    availableBooksScreen(true);
+                    break;
+
+                }else{
+
+                    System.out.println("That's not an option, buddy, so try again!");
+                    availableBooksScreen(true);
+                    break;
+
+                }
+
+        }
+
+    }
+
+    public void viewCheckedOutBookDescription(){
+
+        for(Book description : inventoryOfBooks){
+
+            loopBooks(true);
 
         }
 
@@ -117,6 +171,8 @@ public class Screen {
                     2) Show Checked Out Books
                     3) Buh-bye!
                     """);
+
+            System.out.println("What do you want to do, pal?");
             int homeScreenInput = userInput.nextInt();
 
             switch (homeScreenInput){
@@ -124,7 +180,7 @@ public class Screen {
                     availableBooksScreen(true);
                     break;
                 case 2:
-                    checkedOutBooksScreen();
+                    checkedOutBooksScreen(true);
                     break;
                 case 3:
                     System.exit(0);
@@ -143,7 +199,20 @@ public class Screen {
 
         while (isEnabled) {
 
+            System.out.println(" \n--------------Available Books---------------");
+
             loopBooks(false);
+
+            viewAvailableBookDescription();
+
+            System.out.println("""
+                    
+                    So, you made it this far. What now?
+                    ------------------------------------
+                    C) Check Out Book
+                    L) Take Me Back To The List!
+                    X) Take Me Back To The Homepage!
+                    """);
 
             Scanner userInput = new Scanner(System.in);
 
@@ -152,6 +221,9 @@ public class Screen {
             switch (availBooksInput.toUpperCase()) {
                 case "C":
                     System.out.println("ur a nerd lol");
+                    break;
+                case "L":
+                    availableBooksScreen(true);
                     break;
                 case "X":
                     homeScreen(true);
@@ -167,11 +239,13 @@ public class Screen {
 
     }
 
-    public void checkedOutBooksScreen(){
+    public void checkedOutBooksScreen(boolean isEnabled){
 
-        while (true) {
+        while (isEnabled) {
 
             loopBooks(true);
+
+            isEnabled = false;
 
         }
 

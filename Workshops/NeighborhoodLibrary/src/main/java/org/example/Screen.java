@@ -87,7 +87,28 @@ public class Screen {
                     "978-1-627-62728-9",
                     "The Tortured Poets Department",
                     "This is author Taylor Swift's newest release. \nIt's hauntingly brilliant and incredibly captivating, \nbut one question remains... \nWas it her decision to release this at 2:00 AM?",
-                    false)
+                    false),
+            new Book(4,
+                    "978-1-829-31526-6",
+                    "The Seven Elements In Genshin Impact And How To Use Them",
+                    "This is your one-stop-shop to not only know \nmore about each of Genshin Impact's seven elements, \nbut also your guide to learning about \nelemental effects and reactions.",
+                    false),
+            new Book(5,
+                    "978-1-010-00011-1",
+                    "How To Translate Binary Into Words And Vice Versa",
+                    "01010100 01110010 01111001 \n00100000 01101001 \n01110100 00100001",
+                    false),
+            new Book(6,
+                    "978-1-638-02872-7",
+                    "The Tarot Bible",
+                    "Featuring contributions from several well-known \ntarot experts, this book covers the major and minor \narcana, as well as other topics such as \nnumerology and the zodiac.",
+                    false),
+            new Book(7,
+                    "978-1-602-61789-9",
+                    "Toilet In Wonderland",
+                    "This story follows a girl named Mira, \nwho explores an imaginary world created by her constipation. \nWhat will happen as her constipation levels lower? \nFind out now!",
+                    true,
+                    "Jimbo Beans")
 
     };
 
@@ -99,11 +120,11 @@ public class Screen {
 
                 if (book.isCheckedOut() != checkedOut && !bookStatus){
 
-                    System.out.println(book.getId() + " " + book.getTitle());
+                    System.out.println(book.getId() + " | " + book.getTitle());
 
                 }else if (book.isCheckedOut() == checkedOut && bookStatus){
 
-                    System.out.println(book.getId() + " " + book.getTitle() + " " + book.getCheckedOutTo());
+                    System.out.println(book.getId() + " | " + book.getTitle() + " | Checked out by: " + book.getCheckedOutTo());
 
                 }
 
@@ -121,7 +142,7 @@ public class Screen {
 
             Scanner userInput = new Scanner(System.in);
 
-            System.out.println("\nSo...do you want to take a closer look at one of our fine entries? \n(Hint: Enter the book ID to view the book description, or type in 100 to go back to all available books!)");
+            System.out.println("\nSo...do you want to take a closer look at one of our fine entries? \n(Hint: Enter the book ID to view the book description, or type in 100 to go back to the home screen!)");
 
             int bookDescriptInput = userInput.nextInt();
 
@@ -132,7 +153,7 @@ public class Screen {
 
                 }else if (bookDescriptInput == 100){
 
-                    availableBooksScreen(true);
+                    homeScreen(true);
                     break;
 
                 }else{
@@ -147,11 +168,53 @@ public class Screen {
 
     }
 
-    public void viewCheckedOutBookDescription(){
+    public void viewCheckedOutBook(){
 
-        for(Book description : inventoryOfBooks){
+        boolean checkedOut = true;
 
-            loopBooks(true);
+        for(Book ignored : inventoryOfBooks){
+
+            Scanner userInput = new Scanner(System.in);
+
+            System.out.println("\nEnter the ID of the book you want to check in, or type 100 to go back to all checked out books:");
+
+            int checkedOutBookInput = userInput.nextInt();
+            userInput.nextLine();
+
+            if (checkedOutBookInput >= 0 && checkedOutBookInput < inventoryOfBooks.length && inventoryOfBooks[checkedOutBookInput].isCheckedOut() == checkedOut){
+
+                System.out.println("ID: " + inventoryOfBooks[checkedOutBookInput].getId() + " Title: " + inventoryOfBooks[checkedOutBookInput].getTitle() + " ISBN: " + inventoryOfBooks[checkedOutBookInput].getIsbn() + " \n" + inventoryOfBooks[checkedOutBookInput].getDescription());
+                System.out.println("\nCheck out this book? (Y)es/(N)o");
+
+                String confirmInput = userInput.nextLine();
+
+                switch (confirmInput){
+                    case "Y":
+                        System.out.println("lol");
+                        break;
+                    case "N":
+                        viewCheckedOutBook();
+                        break;
+                    default:
+                        System.out.println("That's not an option, buddy, so try again!");
+                        checkedOutBooksScreen(true);
+
+                }
+
+                break;
+
+            }else if (checkedOutBookInput == 100){
+
+                checkedOutBooksScreen(true);
+                break;
+
+            }else{
+
+                System.out.println("That's not an option, buddy, so try again!");
+                checkedOutBooksScreen(true);
+                break;
+
+            }
 
         }
 
@@ -243,7 +306,37 @@ public class Screen {
 
         while (isEnabled) {
 
+            System.out.println(" \n--------------Checked Out Books---------------");
+
             loopBooks(true);
+
+            System.out.println("""
+                    
+                    So, what do you want to do?
+                    ------------------------------------
+                    C) Check In Book
+                    L) Take Me Back To The List!
+                    X) Take Me Back To The Homepage!
+                    """);
+
+            Scanner userInput = new Scanner(System.in);
+
+            String checkedOutBooksInput = userInput.nextLine();
+
+            switch (checkedOutBooksInput.toUpperCase()){
+                case "C":
+                    viewCheckedOutBook();
+                    break;
+                case "L":
+                    checkedOutBooksScreen(true);
+                    break;
+                case "X":
+                    homeScreen(true);
+                    break;
+                default:
+                    System.out.println("That's not an option, buddy, so try again!");
+                    checkedOutBooksScreen(true);
+            }
 
             isEnabled = false;
 

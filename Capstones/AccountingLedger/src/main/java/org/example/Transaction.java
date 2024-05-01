@@ -7,13 +7,15 @@ public class Transaction {
     private String description;
     private String vendor;
     private double amount;
+    private String username;
 
-    public Transaction(String date, String time, String description, String vendor, double amount) {
+    public Transaction(String date, String time, String description, String vendor, double amount, String username) {
         this.date = date;
         this.time = time;
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
+        this.username = username;
     }
 
     public String getDate() {
@@ -55,4 +57,13 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

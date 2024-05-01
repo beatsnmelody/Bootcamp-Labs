@@ -1,14 +1,17 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Spliterator;
-
 public class MoneyTransfer {
 
-    public static double depositFunction(double depositAmount){
+    public static double depositFunction(double depositAmount, double previousBalance){
 
-        double currentBalance = depositAmount;
+        double currentBalance = previousBalance + depositAmount;
+        return currentBalance;
+
+    }
+
+    public static double withdrawFunction(double withdrawalAmount, double previousBalance){
+
+        double currentBalance = previousBalance - withdrawalAmount;
         return currentBalance;
 
     }

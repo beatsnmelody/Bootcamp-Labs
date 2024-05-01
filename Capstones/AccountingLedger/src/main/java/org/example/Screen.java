@@ -36,7 +36,7 @@ public class Screen {
 
                 this.currentUser = user;
 
-                System.out.println("[OH, I REMEMBER YOU. YOUR NAME IS " + user.getName().toUpperCase() + ", AND YOUR CURRENT BALANCE IS " + user.getBalance() + ".]");
+                System.out.println("[OH, I REMEMBER YOU. YOUR NAME IS " + user.getName().toUpperCase() + ", AND YOUR CURRENT BALANCE IS " + user.getBalance() + " DOLLARS.]\n");
 
                 homeScreen();
 
@@ -44,7 +44,7 @@ public class Screen {
 
                 User newUser = new User(userName, 50.00);
 
-                System.out.println("[GREAT, SO YOUR USERNAME IS " + userName.toUpperCase() + ", AND YOUR BALANCE IS " + newUser.getBalance() + ".]");
+                System.out.println("[GREAT, SO YOUR USERNAME IS " + userName.toUpperCase() + ", AND YOUR BALANCE IS " + newUser.getBalance() + " DOLLARS.]\n");
 
                 this.currentUser = newUser;
 
@@ -84,7 +84,7 @@ public class Screen {
                     depositScreen(true);
                     break;
                 case "P":
-                    System.out.println("[THIS IS THE PAYMENT SCREEN.]");
+                    paymentScreen(true);
                     break;
                 case "L":
                     System.out.println("[THIS IS THE LEDGER SCREEN.]");
@@ -127,11 +127,14 @@ public class Screen {
                 System.out.println("[OK, ONE LAST THING. WHAT'S THE AMOUNT OF THIS DEPOSIT?]");
                 double amountInput = Double.parseDouble(userInput.nextLine());
 
-                MoneyTransfer.depositFunction(amountInput);
+                String username = currentUser.getName();
 
-                Transaction newTransaction = new Transaction(finalDateInput, finalTimeInput, descriptionInput, vendorInput, amountInput, currentUser.getName());
-
+                Transaction newTransaction = new Transaction(finalDateInput, finalTimeInput, descriptionInput, vendorInput, amountInput, username);
                 FileManager.writeTransactionToFile(newTransaction);
+
+                double newBalance = MoneyTransfer.depositFunction(amountInput, currentUser.getBalance());
+
+                currentUser.setBalance(newBalance);
 
             } catch (ParseException ex) {
                 System.out.println("[SORRY, CAN'T INTERPRET THE DATE/TIME YOU PUT.]");
@@ -162,5 +165,73 @@ public class Screen {
         }
 
 
+    }
+
+    public void paymentScreen(boolean isEnabled){
+
+        while(isEnabled){
+
+            System.out.println("[ARE YOU HERE BECAUSE YOU LOST MONEY? IT BETTER HAVE BEEN FOR SOMETHING RESPONSIBLE.");
+
+            Scanner userInput = new Scanner(System.in);
+
+            try {
+
+                System.out.println("[ENTER THE DATE OF THE PAYMENT IN NUMBERS.]");
+                String dateInput = userInput.nextLine();
+                Date transactionDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateInput);
+                String finalDateInput = transactionDate.toString();
+
+                System.out.println("[ENTER THE TIME OF THE PAYMENT IN NUMBERS. INCLUDE SECONDS IF POSSIBLE.]");
+                String timeInput = userInput.nextLine();
+                LocalTime transactionTime = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("hh:mm:ss"));
+                String finalTimeInput = transactionTime.toString();
+
+                System.out.println("[SO, WHAT WAS THIS PAYMENT FOR? ENTER A SHORT DESCRIPTION HERE. DON'T GIVE ME A NOVEL.]");
+                String descriptionInput = userInput.nextLine();
+
+                System.out.println("[GREAT. NOW, WHO DID YOU PAY TO?]");
+                String vendorInput = userInput.nextLine();
+
+                System.out.println("[OK, ONE LAST THING. WHAT'S THE AMOUNT YOU WITHDREW?]");
+                double amountInput = Double.parseDouble(userInput.nextLine());
+
+                String username = currentUser.getName();
+
+                Transaction newTransaction = new Transaction(finalDateInput, finalTimeInput, descriptionInput, vendorInput, amountInput, username);
+                FileManager.writeTransactionToFile(newTransaction);
+
+                double newBalance = MoneyTransfer.withdrawFunction(amountInput, currentUser.getBalance());
+
+                currentUser.setBalance(newBalance);
+
+            } catch (ParseException ex) {
+                System.out.println("[SORRY, CAN'T INTERPRET THE DATE/TIME YOU PUT.]");
+            }
+
+            System.out.println("""
+                    [SO...DO YOU HAVE ANOTHER PAYMENT TO MAKE?]
+                    Y) YES
+                    N) NO
+                    """);
+
+            String multiPaymentInput = userInput.nextLine();
+
+            switch (multiPaymentInput.toUpperCase()) {
+
+                case "Y":
+                    System.out.println("[UGH...TAKING YOU BACK TO THE PAYMENT SCREEN.\n");
+                    continue;
+                case "N":
+                    System.out.println("[OH? TAKING YOU BACK TO THE HOME SCREEN.]");
+                    isEnabled = false;
+                    homeScreen();
+                    break;
+                default:
+                    System.out.println("[...I ASSUME YOU TYPED IN SOMETHING WRONG. PLEASE SELECT A VALID LETTER.]\n");
+
+            }
+
+        }
     }
 }

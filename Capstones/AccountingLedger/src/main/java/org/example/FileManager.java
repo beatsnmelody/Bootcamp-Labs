@@ -3,25 +3,30 @@ package org.example;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FileManager {
 
     //write and read transaction will require username as well as transaction
     //set
 
-    public static void writeTransactionToFile(Transaction transaction){
+    public static void writeTransactionToFile(Transaction transaction, String username){
 
         String filePath = "src/main/resources/ledger.csv";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))){
 
-            System.out.println("[ENTERING TRANSACTION...]");
+            if (username.equalsIgnoreCase(transaction.getUsername())) {
 
-            writer.write(transaction.getDate() + "|" + transaction.getTime() + "|" + transaction.getDescription() + "|" + transaction.getVendor() + "|" + transaction.getAmount());
+                System.out.println("[ENTERING TRANSACTION...]");
 
-            writer.newLine();
+                writer.write(transaction.getDate() + "|" + transaction.getTime() + "|" + transaction.getDescription() + "|" + transaction.getVendor() + "|" + transaction.getAmount() + "|" + transaction.getUsername());
 
-            System.out.println("[TRANSACTION SUCCESSFULLY ENTERED.]");
+                writer.newLine();
+
+                System.out.println("[TRANSACTION SUCCESSFULLY ENTERED.]");
+
+            }
 
         }
         catch (IOException ex){
@@ -65,6 +70,12 @@ public class FileManager {
         }catch(IOException ex){
             System.out.println("[OOPS, COULDN'T FIND TRANSACTIONS.]");
         };
+
+        System.out.println("DATE | TIME | DESCRIPTION | VENDOR | AMOUNT | USER NAME");
+
+        for(Transaction transaction : transactions){
+            System.out.printf("%s | %s | %s | %s | $%.2f | %s \n", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount(), transaction.getUsername());
+        }
 
         return transactions;
     }
@@ -116,5 +127,21 @@ public class FileManager {
         };
 
         return users;
+    }
+
+    public static double getUserBalance(String username, double initialBalance){
+
+        var transactions = readTransactionFromFile(username);
+
+        double balance = initialBalance;
+
+        for(Transaction transaction : transactions){
+
+            balance += transaction.getAmount();
+
+        }
+
+        return balance;
+
     }
 }

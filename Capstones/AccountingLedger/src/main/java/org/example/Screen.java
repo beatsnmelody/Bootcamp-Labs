@@ -36,7 +36,18 @@ public class Screen {
 
                 this.currentUser = user;
 
-                System.out.println("[OH, I REMEMBER YOU. YOUR NAME IS " + user.getName().toUpperCase() + ", AND YOUR CURRENT BALANCE IS " + user.getBalance() + " DOLLARS.]\n");
+                System.out.println("[ANALYZING USER...]");
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                double currentBalance = FileManager.getUserBalance(userName, 50.00);
+
+                System.out.println("\n[....................................]");
+                System.out.println("\n[OH, I REMEMBER YOU. YOUR NAME IS " + user.getName().toUpperCase() + ", AND YOUR CURRENT BALANCE IS " + currentBalance + " DOLLARS.]\n");
 
                 homeScreen();
 
@@ -45,6 +56,8 @@ public class Screen {
                 User newUser = new User(userName, 50.00);
 
                 System.out.println("[GREAT, SO YOUR USERNAME IS " + userName.toUpperCase() + ", AND YOUR BALANCE IS " + newUser.getBalance() + " DOLLARS.]\n");
+
+                FileManager.writeUserToFile(newUser);
 
                 this.currentUser = newUser;
 
@@ -87,7 +100,7 @@ public class Screen {
                     paymentScreen(true);
                     break;
                 case "L":
-                    System.out.println("[THIS IS THE LEDGER SCREEN.]");
+                    ledgerScreen(true);
                     break;
                 case "X":
                     System.exit(0);
@@ -108,14 +121,15 @@ public class Screen {
 
             try {
 
-                System.out.println("[ENTER THE DATE OF THE DEPOSIT IN NUMBERS.]");
+                System.out.println("[ENTER THE DATE OF THE DEPOSIT IN NUMBERS. ENTER IT AS MONTH-DAY-YEAR.]");
                 String dateInput = userInput.nextLine();
-                Date transactionDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateInput);
-                String finalDateInput = transactionDate.toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+                Date transactionDate = sdf.parse(dateInput);
+                String finalDateInput = sdf.format(transactionDate);
 
                 System.out.println("[ENTER THE TIME OF THE DEPOSIT IN NUMBERS. INCLUDE SECONDS IF POSSIBLE.]");
                 String timeInput = userInput.nextLine();
-                LocalTime transactionTime = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("hh:mm:ss"));
+                LocalTime transactionTime = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm:ss"));
                 String finalTimeInput = transactionTime.toString();
 
                 System.out.println("[SO, IS THIS A PAYCHECK? ENTER A SHORT DESCRIPTION HERE. DON'T GIVE ME A NOVEL.]");
@@ -130,7 +144,7 @@ public class Screen {
                 String username = currentUser.getName();
 
                 Transaction newTransaction = new Transaction(finalDateInput, finalTimeInput, descriptionInput, vendorInput, amountInput, username);
-                FileManager.writeTransactionToFile(newTransaction);
+                FileManager.writeTransactionToFile(newTransaction, username);
 
                 double newBalance = MoneyTransfer.depositFunction(amountInput, currentUser.getBalance());
 
@@ -151,7 +165,7 @@ public class Screen {
             switch (multiDepositInput.toUpperCase()) {
 
                 case "Y":
-                    System.out.println("[OK...TAKING YOU BACK TO THE DEPOSIT SCREEN.\n");
+                    System.out.println("[OK...TAKING YOU BACK TO THE DEPOSIT SCREEN.]\n");
                     continue;
                 case "N":
                     System.out.println("[THAT'S HOW THE COOKIE CRUMBLES. TAKING YOU BACK TO THE HOME SCREEN.]");
@@ -171,20 +185,21 @@ public class Screen {
 
         while(isEnabled){
 
-            System.out.println("[ARE YOU HERE BECAUSE YOU LOST MONEY? IT BETTER HAVE BEEN FOR SOMETHING RESPONSIBLE.");
+            System.out.println("[ARE YOU HERE BECAUSE YOU LOST MONEY? IT BETTER HAVE BEEN FOR SOMETHING RESPONSIBLE.]");
 
             Scanner userInput = new Scanner(System.in);
 
             try {
 
-                System.out.println("[ENTER THE DATE OF THE PAYMENT IN NUMBERS.]");
+                System.out.println("[ENTER THE DATE OF THE PAYMENT IN NUMBERS. ENTER IT AS MONTH-DAY-YEAR.]");
                 String dateInput = userInput.nextLine();
-                Date transactionDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateInput);
-                String finalDateInput = transactionDate.toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+                Date transactionDate = sdf.parse(dateInput);
+                String finalDateInput = sdf.format(transactionDate);
 
                 System.out.println("[ENTER THE TIME OF THE PAYMENT IN NUMBERS. INCLUDE SECONDS IF POSSIBLE.]");
                 String timeInput = userInput.nextLine();
-                LocalTime transactionTime = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("hh:mm:ss"));
+                LocalTime transactionTime = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm:ss"));
                 String finalTimeInput = transactionTime.toString();
 
                 System.out.println("[SO, WHAT WAS THIS PAYMENT FOR? ENTER A SHORT DESCRIPTION HERE. DON'T GIVE ME A NOVEL.]");
@@ -193,13 +208,17 @@ public class Screen {
                 System.out.println("[GREAT. NOW, WHO DID YOU PAY TO?]");
                 String vendorInput = userInput.nextLine();
 
-                System.out.println("[OK, ONE LAST THING. WHAT'S THE AMOUNT YOU WITHDREW?]");
+                System.out.println("[OK, ONE LAST THING. WHAT'S THE AMOUNT YOU WITHDREW? TYPE THIS AS A NEGATIVE NUMBER.]");
                 double amountInput = Double.parseDouble(userInput.nextLine());
+
+                if (amountInput > 0){
+                    System.out.println("[THIS IS AN INVALID ENTRY. I SAID A NEGATIVE NUMBER.]");
+                }
 
                 String username = currentUser.getName();
 
                 Transaction newTransaction = new Transaction(finalDateInput, finalTimeInput, descriptionInput, vendorInput, amountInput, username);
-                FileManager.writeTransactionToFile(newTransaction);
+                FileManager.writeTransactionToFile(newTransaction, username);
 
                 double newBalance = MoneyTransfer.withdrawFunction(amountInput, currentUser.getBalance());
 
@@ -220,7 +239,7 @@ public class Screen {
             switch (multiPaymentInput.toUpperCase()) {
 
                 case "Y":
-                    System.out.println("[UGH...TAKING YOU BACK TO THE PAYMENT SCREEN.\n");
+                    System.out.println("[UGH...TAKING YOU BACK TO THE PAYMENT SCREEN.]\n");
                     continue;
                 case "N":
                     System.out.println("[OH? TAKING YOU BACK TO THE HOME SCREEN.]");
@@ -231,6 +250,17 @@ public class Screen {
                     System.out.println("[...I ASSUME YOU TYPED IN SOMETHING WRONG. PLEASE SELECT A VALID LETTER.]\n");
 
             }
+
+        }
+    }
+
+    public void ledgerScreen(boolean isEnabled){
+
+        while (isEnabled) {
+
+            FileManager.readTransactionFromFile(currentUser.getName());
+
+            isEnabled = false;
 
         }
     }

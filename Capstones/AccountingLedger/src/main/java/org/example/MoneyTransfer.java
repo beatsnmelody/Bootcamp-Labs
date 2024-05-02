@@ -11,7 +11,7 @@ public class MoneyTransfer {
 
     public static double withdrawFunction(double withdrawalAmount, double previousBalance){
 
-        double currentBalance = previousBalance - withdrawalAmount;
+        double currentBalance = previousBalance + withdrawalAmount;
         return currentBalance;
 
     }

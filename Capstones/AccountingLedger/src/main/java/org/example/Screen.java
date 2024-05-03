@@ -4,10 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Screen {
 
@@ -38,12 +35,6 @@ public class Screen {
 
                 System.out.println("[ANALYZING USER...]");
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-
                 double currentBalance = FileManager.getUserBalance(userName, 50.00);
 
                 System.out.println("\n[....................................]");
@@ -55,7 +46,7 @@ public class Screen {
 
                 User newUser = new User(userName, 50.00);
 
-                System.out.println("[GREAT, SO YOUR USERNAME IS " + userName.toUpperCase() + ", AND YOUR BALANCE IS " + newUser.getBalance() + " DOLLARS.]\n");
+                System.out.printf("[GREAT, SO YOUR USERNAME IS %s, AND YOUR BALANCE IS $%.2f DOLLARS.]", userName.toUpperCase(), newUser.getBalance());
 
                 FileManager.writeUserToFile(newUser);
 
@@ -78,7 +69,7 @@ public class Screen {
         while(true) {
 
             System.out.println("""
-                    [YAWN...]
+                    \n[YAWN...]
                     [OH, IT'S YOU. LET ME GUESS, YOU WANT TO UPDATE YOUR LEDGER?]
                     [TYPE IN A LETTER BELOW TO GET STARTED.]
                     -------------------------------------------------------------
@@ -166,9 +157,9 @@ public class Screen {
 
                 case "Y":
                     System.out.println("[OK...TAKING YOU BACK TO THE DEPOSIT SCREEN.]\n");
-                    continue;
+                    break;
                 case "N":
-                    System.out.println("[THAT'S HOW THE COOKIE CRUMBLES. TAKING YOU BACK TO THE HOME SCREEN.]");
+                    System.out.println("[THAT'S HOW THE COOKIE CRUMBLES. TAKING YOU BACK TO THE HOME SCREEN.]\n");
                     isEnabled = false;
                     homeScreen();
                     break;
@@ -240,9 +231,9 @@ public class Screen {
 
                 case "Y":
                     System.out.println("[UGH...TAKING YOU BACK TO THE PAYMENT SCREEN.]\n");
-                    continue;
+                    break;
                 case "N":
-                    System.out.println("[OH? TAKING YOU BACK TO THE HOME SCREEN.]");
+                    System.out.println("[OH? TAKING YOU BACK TO THE HOME SCREEN.]\n");
                     isEnabled = false;
                     homeScreen();
                     break;
@@ -258,9 +249,97 @@ public class Screen {
 
         while (isEnabled) {
 
-            FileManager.readTransactionFromFile(currentUser.getName());
+            Scanner userInput = new Scanner(System.in);
 
-            isEnabled = false;
+            System.out.println("\n[YOU CAN VIEW YOUR TRANSACTION HISTORY HERE.]");
+            System.out.println("[WHAT KIND OF TRANSACTIONS DO YOU WANT TO SEE...OR DO YOU WANT TO RUN A REPORT TO FILTER YOUR TRANSACTIONS?]");
+            System.out.println("""
+                    A) ALL TRANSACTIONS
+                    D) DEPOSITS
+                    P) PAYMENTS
+                    R) NEW REPORT
+                    H) HOME SCREEN
+                    """);
+
+            String ledgerInput = userInput.nextLine();
+
+            switch (ledgerInput.toUpperCase()){
+                case "A":
+                    FileManager.displayTransactions(currentUser.getName(), FileManager.readTransactionFromFile(currentUser.getName()));
+                    break;
+                case "D":
+                    Search.depositSearch(currentUser.getName());
+                    break;
+                case "P":
+                    Search.paymentSearch(currentUser.getName());
+                    break;
+                case "R":
+                    reportsScreen(true);
+                    isEnabled = false;
+                    break;
+                case "H":
+                    System.out.println("[CAN'T MAKE UP YOUR MIND? TAKING YOU BACK TO THE HOME SCREEN.]");
+                    homeScreen();
+                    isEnabled = false;
+                    break;
+                default:
+                    System.out.println("[...I ASSUME YOU TYPED IN SOMETHING WRONG. PLEASE SELECT A VALID LETTER.]\n");
+            }
+
+        }
+    }
+
+    public void reportsScreen(boolean isEnabled){
+
+        while (isEnabled){
+
+            Scanner userInput = new Scanner(System.in);
+
+            System.out.println("\n[SO, YOU DO WANT TO SEE YOUR REPORTS, HUH?]");
+            System.out.println("[DO YOU WANT TO RUN A PRE-DEFINED REPORT OR SEARCH BY VENDOR?]");
+            System.out.println("""
+                    1) MONTH TO DATE
+                    2) PREVIOUS MONTH
+                    3) YEAR TO DATE
+                    4) PREVIOUS YEAR
+                    5) SEARCH BY VENDOR
+                    0) GO BACK TO THE REPORTS PAGE
+                    """);
+
+            int reportsInput = Integer.parseInt(userInput.nextLine());
+
+            switch (reportsInput){
+                case 1:
+                    System.out.println("[ENTER THE MONTH YOU WANT TO SEARCH FOR. ENTER IT IN NUMBERS.]");
+                    String monthInput = userInput.nextLine();
+                    Search.monthToDate(currentUser.getName(), monthInput);
+                    break;
+                case 2:
+                    System.out.println("[HERE'S YOUR TRANSACTIONS FOR THE PREVIOUS MONTH.]");
+                    Search.previousMonth(currentUser.getName());
+                    break;
+                case 3:
+                    System.out.println("[ENTER THE YEAR YOU WANT TO SEARCH FOR.]");
+                    String yearInput = userInput.nextLine();
+                    Search.yearToDate(currentUser.getName(), yearInput);
+                    break;
+                case 4:
+                    System.out.println("[HERE'S YOUR TRANSACTIONS FOR THE PREVIOUS YEAR.]");
+                    Search.previousYear(currentUser.getName());
+                    break;
+                case 5:
+                    System.out.println("\n[ENTER THE NAME OF THE VENDOR HERE. BE SPECIFIC.]");
+                    String vendorInput = userInput.nextLine();
+                    Search.searchByVendor(currentUser.getName(), vendorInput);
+                    break;
+                case 0:
+                    System.out.println("[YOU REALLY CAN'T MAKE UP YOUR MIND TODAY...TAKING YOU BACK TO THE HOME SCREEN.]");
+                    homeScreen();
+                    isEnabled = false;
+                    break;
+                default:
+                    System.out.println("[...I ASSUME YOU TYPED IN SOMETHING WRONG. PLEASE SELECT A VALID LETTER.]\n");
+            }
 
         }
     }

@@ -31,7 +31,7 @@ public class FileManager {
         }
         catch (IOException ex){
 
-            System.out.println("[OOPS, CAN'T PUT THAT TRANSACTION THERE.]");
+            System.out.println("[OOPS, CAN'T READ TRANSACTIONS.]");
 
         }
     }
@@ -69,15 +69,27 @@ public class FileManager {
 
         }catch(IOException ex){
             System.out.println("[OOPS, COULDN'T FIND TRANSACTIONS.]");
-        };
-
-        System.out.println("DATE | TIME | DESCRIPTION | VENDOR | AMOUNT | USER NAME");
-
-        for(Transaction transaction : transactions){
-            System.out.printf("%s | %s | %s | %s | $%.2f | %s \n", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount(), transaction.getUsername());
         }
 
         return transactions;
+
+    }
+
+    public static void displayTransactions(String username, List<Transaction> transactions){
+
+        System.out.println("DATE | TIME | DESCRIPTION | VENDOR | AMOUNT | USER NAME");
+
+
+        for (int i = transactions.size() - 1; i >= 0; i--){
+
+            Transaction transaction = transactions.get(i);
+
+            if(username.equalsIgnoreCase(transaction.getUsername())) {
+                System.out.printf("%s | %s | %s | %s | $%.2f | %s \n", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount(), transaction.getUsername());
+            }
+
+        }
+
     }
 
     public static void writeUserToFile(User user){

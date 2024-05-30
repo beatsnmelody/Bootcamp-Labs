@@ -18,6 +18,19 @@ public class Ingredients {
     private List<Sauce> sauce;
     private boolean sauceOnSide;
 
+    public Ingredients() {
+
+        this.bread = null;
+        this.meat = null;
+        this.hasExtraMeat = false;
+        this.cheese = null;
+        this.hasExtraCheese = false;
+        this.toppings = null;
+        this.sauce = null;
+        this.sauceOnSide = false;
+
+    }
+
     public Ingredients(Bread bread) {
         this.bread = bread;
     }
@@ -37,7 +50,7 @@ public class Ingredients {
         return bread;
     }
 
-    public void ListBread(Bread bread) {
+    public void setBread(Bread bread) {
         this.bread = bread;
     }
 
@@ -45,7 +58,7 @@ public class Ingredients {
         return Optional.ofNullable(meat);
     }
 
-    public void ListMeat(List<Meat> meat) {
+    public void setMeat(List<Meat> meat) {
         this.meat = meat;
     }
 
@@ -53,7 +66,7 @@ public class Ingredients {
         return hasExtraMeat;
     }
 
-    public void ListHasExtraMeat(boolean hasExtraMeat) {
+    public void setHasExtraMeat(boolean hasExtraMeat) {
         this.hasExtraMeat = hasExtraMeat;
     }
 
@@ -61,7 +74,7 @@ public class Ingredients {
         return Optional.ofNullable(cheese);
     }
 
-    public void ListCheese(List<Cheese> cheese) {
+    public void setCheese(List<Cheese> cheese) {
         this.cheese = cheese;
     }
 
@@ -69,7 +82,7 @@ public class Ingredients {
         return hasExtraCheese;
     }
 
-    public void ListHasExtraCheese(boolean hasExtraCheese) {
+    public void setHasExtraCheese(boolean hasExtraCheese) {
         this.hasExtraCheese = hasExtraCheese;
     }
 
@@ -77,7 +90,7 @@ public class Ingredients {
         return Optional.ofNullable(toppings);
     }
 
-    public void ListToppings(List<Toppings> toppings) {
+    public void setToppings(List<Toppings> toppings) {
         this.toppings = toppings;
     }
 
@@ -85,7 +98,7 @@ public class Ingredients {
         return Optional.ofNullable(sauce);
     }
 
-    public void ListSauce(List<Sauce> sauce) {
+    public void setSauce(List<Sauce> sauce) {
         this.sauce = sauce;
     }
 
@@ -93,7 +106,7 @@ public class Ingredients {
         return sauceOnSide;
     }
 
-    public void ListSauceOnSide(boolean sauceOnSide) {
+    public void setSauceOnSide(boolean sauceOnSide) {
         this.sauceOnSide = sauceOnSide;
     }
 

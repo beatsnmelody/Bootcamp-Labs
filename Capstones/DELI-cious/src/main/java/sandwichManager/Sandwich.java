@@ -8,6 +8,11 @@ public class Sandwich {
     private double sandwichPrice;
     private Ingredients ingredients;
 
+    public Sandwich() {
+        this.size = null;
+        this.ingredients = null;
+    }
+
     public Sandwich(Size size, Ingredients ingredients) {
         this.size = size;
         this.ingredients = ingredients;
@@ -47,12 +52,15 @@ public class Sandwich {
         if (sandwich.getSize().equals(Size.FOUR_INCH)){
             breadPrice += 5.50;
             meatPrice += 1.00;
+            cheesePrice += .75;
         }else if (getSize().equals(Size.EIGHT_INCH)){
             breadPrice += 7.00;
             meatPrice += 2.00;
+            cheesePrice += 1.50;
         }else if (getSize().equals(Size.TWELVE_INCH)){
             breadPrice += 8.50;
             meatPrice += 3.00;
+            cheesePrice += 2.25;
         }
 
         if (hasExtraMeat && getSize().equals(Size.FOUR_INCH)){
@@ -63,7 +71,15 @@ public class Sandwich {
             meatPrice += 1.50;
         }
 
-        sandwichPrice = breadPrice + meatPrice;
+        if (hasExtraCheese && getSize().equals(Size.FOUR_INCH)){
+            cheesePrice += .30;
+        }else if (hasExtraCheese && getSize().equals(Size.EIGHT_INCH)){
+            cheesePrice += .60;
+        }else if (hasExtraCheese && getSize().equals(Size.TWELVE_INCH)){
+            cheesePrice += .90;
+        }
+
+        sandwichPrice = breadPrice + meatPrice + cheesePrice;
 
         return sandwichPrice;
     }

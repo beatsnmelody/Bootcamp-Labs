@@ -2,6 +2,7 @@ package displayManager;
 
 import orderManager.Chips;
 import orderManager.Drink;
+import orderManager.DrinkSize;
 import orderManager.Order;
 import sandwichManager.*;
 
@@ -440,9 +441,77 @@ public class Screen {
 
     public void chipsScreen(Order currentOrder) {
 
+        Scanner userInput = new Scanner(System.in);
+
+        System.out.println("What chips do you want?");
+        System.out.println("""
+                PLAIN
+                BARBECUE
+                SALT AND VINEGAR
+                JALAPENO
+                BACK TO (ORDER)
+                """);
+
+        String chipsInput = userInput.nextLine();
+
+        switch(chipsInput.toUpperCase()){
+            case "PLAIN":
+                currentChips = Chips.PLAIN;
+                break;
+            case "BARBECUE":
+                currentChips = Chips.BARBECUE;
+                break;
+            case "SALT AND VINEGAR":
+                currentChips = Chips.SALT_AND_VINEGAR;
+                break;
+            case "JALAPENO":
+                currentChips = Chips.JALAPENO;
+                break;
+            case "ORDER":
+                orderScreen(true);
+                break;
+            default:
+                System.out.println("Not an option");
+        }
+
+
     }
 
     public void drinkScreen(Order currentOrder) {
+
+        currentDrink = new Drink();
+
+        Scanner userInput = new Scanner(System.in);
+
+        System.out.println("What size do you want your drink?");
+        System.out.println("""
+                SMALL
+                MEDIUM
+                LARGE
+                GODZILLA
+                BACK TO (ORDER)
+                """);
+
+        String drinkSizeInput = userInput.nextLine();
+
+        switch(drinkSizeInput.toUpperCase()){
+            case "SMALL":
+                currentDrink.setDrinkSize(DrinkSize.SMALL);
+            case "MEDIUM":
+                currentDrink.setDrinkSize(DrinkSize.MEDIUM);
+            case "LARGE":
+                currentDrink.setDrinkSize(DrinkSize.LARGE);
+            case "GODZILLA":
+                currentDrink.setDrinkSize(DrinkSize.GODZILLA);
+            case "ORDER":
+                currentDrink = null;
+                orderScreen(true);
+            default:
+                System.out.println("Not an option");
+
+        }
+
+        
 
     }
 

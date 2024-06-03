@@ -6,6 +6,12 @@ public class Drink {
     private DrinkList drinkType;
     private boolean hasIce;
 
+    public Drink(){
+        this.drinkSize = null;
+        this.drinkType = null;
+        this.hasIce = false;
+    }
+
     public Drink(DrinkSize drinkSize, DrinkList drinkType, boolean hasIce) {
         this.drinkSize = drinkSize;
         this.drinkType = drinkType;

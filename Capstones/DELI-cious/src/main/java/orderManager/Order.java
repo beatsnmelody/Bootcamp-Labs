@@ -92,12 +92,14 @@ public class Order {
         this.dateTimeOrdered = dateTimeOrdered;
     }
 
-    public double getOrderPrice(double sandwichPrice, Order order){
+    public double getOrderPrice(Order order){
 
         orderPrice = 0;
         double drinkPrice = 0;
         double chipsPrice = 0;
+        double sandwichPrice = 0;
         boolean drinkOrdered = false;
+        boolean sandwichOrdered = false;
 
         if (order.getDrink() != null){
             drinkOrdered = true;
@@ -123,6 +125,14 @@ public class Order {
 
         if (order.getChips() != null){
             chipsPrice += 1.50;
+        }
+
+        if (order.getSandwich() != null){
+            sandwichOrdered = true;
+        }
+
+        if (sandwichOrdered){
+            order.getSandwich().calculateSandwichCost(order.getSandwich());
         }
 
         orderPrice = sandwichPrice + drinkPrice + chipsPrice;

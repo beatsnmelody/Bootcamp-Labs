@@ -1,7 +1,5 @@
 package sandwichManager;
 
-import java.util.List;
-
 public class Sandwich {
 
     private Size size;
@@ -40,7 +38,7 @@ public class Sandwich {
         this.ingredients = ingredients;
     }
 
-    private double calculateSandwichCost(Sandwich sandwich){
+    public double calculateSandwichCost(Sandwich sandwich){
 
         sandwichPrice = 0;
         double breadPrice = 0;

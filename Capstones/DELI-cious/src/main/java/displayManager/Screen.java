@@ -34,6 +34,7 @@ public class Screen {
             switch (homeScreenInput) {
 
                 case 1:
+                    currentOrder = new Order();
                     orderScreen(true);
                     break;
                 case 0:
@@ -50,8 +51,6 @@ public class Screen {
     public void orderScreen(boolean isEnabled) {
 
         while (isEnabled) {
-
-            currentOrder = new Order();
 
             System.out.println("What item do you want to add? Type in a number.");
             System.out.println("""
@@ -824,7 +823,7 @@ public class Screen {
 
         System.out.println("Here's your total:");
 
-        currentOrder.getOrderPrice(currentSandwich, currentOrder);
+        System.out.printf("%.2f \n", currentOrder.getOrderPrice(currentSandwich, currentOrder, currentDrink, currentChips));
 
         System.out.println("Confirm order? (YES)/(NO)");
 

@@ -121,7 +121,7 @@ public class Order {
         this.dateTimeOrdered = dateTimeOrdered;
     }
 
-    public double getOrderPrice(Sandwich sandwich, Order order){
+    public double getOrderPrice(Sandwich sandwich, Order order, Drink currentdrink, Chips currentchips){
 
         orderPrice = 0;
         double drinkPrice = 0;
@@ -134,19 +134,19 @@ public class Order {
             drinkOrdered = true;
         }
 
-        if (drinkOrdered && order.drink.getDrinkSize().equals(DrinkSize.SMALL)){
+        if (drinkOrdered && currentdrink.getDrinkSize().equals(DrinkSize.SMALL)){
 
             drinkPrice += 2.00;
 
-        }else if(drinkOrdered && order.drink.getDrinkSize().equals(DrinkSize.MEDIUM)){
+        }else if(drinkOrdered && currentdrink.getDrinkSize().equals(DrinkSize.MEDIUM)){
 
             drinkPrice += 2.50;
 
-        }else if(drinkOrdered && order.drink.getDrinkSize().equals(DrinkSize.LARGE)){
+        }else if(drinkOrdered && currentdrink.getDrinkSize().equals(DrinkSize.LARGE)){
 
             drinkPrice += 3.00;
 
-        }else if(drinkOrdered && order.drink.getDrinkSize().equals(DrinkSize.GODZILLA)){
+        }else if(drinkOrdered && currentdrink.getDrinkSize().equals(DrinkSize.GODZILLA)){
 
             drinkPrice += 3.50;
 

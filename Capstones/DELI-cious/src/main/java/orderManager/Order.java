@@ -170,4 +170,13 @@ public class Order {
 
     }
 
+    @Override
+    public String toString() {
+        return "DELI-licious Receipt: " +
+                "\nSandwich: " + sandwich.toString() +
+                "\nDrink: " + drink.toString() +
+                "\nChips: " + chips.toString() +
+                "\nTotal Cost: " + orderPrice +
+                '\n';
+    }
 }

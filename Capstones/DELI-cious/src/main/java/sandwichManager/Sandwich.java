@@ -1,5 +1,7 @@
 package sandwichManager;
 
+import java.util.Optional;
+
 public class Sandwich {
 
     private Size size;
@@ -28,8 +30,8 @@ public class Sandwich {
         this.size = size;
     }
 
-    public Ingredients getIngredients() {
-        return ingredients;
+    public Optional<Ingredients> getIngredients() {
+        return Optional.ofNullable(ingredients);
     }
 
     public void setIngredients(Ingredients ingredients) {
@@ -42,8 +44,8 @@ public class Sandwich {
         double breadPrice = 0;
         double meatPrice = 0;
         double cheesePrice = 0;
-        boolean hasExtraMeat = sandwich.getIngredients().isHasExtraMeat();
-        boolean hasExtraCheese = sandwich.getIngredients().isHasExtraCheese();
+        boolean hasExtraMeat = sandwich.ingredients.isHasExtraMeat();
+        boolean hasExtraCheese = sandwich.ingredients.isHasExtraCheese();
 
         if (sandwich.getSize().equals(Size.FOUR_INCH)){
             breadPrice += 5.50;
@@ -84,7 +86,7 @@ public class Sandwich {
     public String toString() {
         return "Sandwich: " +
                 "\nSize: " + size +
-                "\nSandwich Ingredients: " + ingredients.toString() +
+                "\nSandwich Ingredients: " + getIngredients().orElse(new Ingredients()) +
                 "\nTotal Cost Of Sandwich: " + sandwichPrice +
                 '\n';
     }

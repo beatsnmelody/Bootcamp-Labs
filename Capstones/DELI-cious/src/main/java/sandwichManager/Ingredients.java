@@ -1,5 +1,6 @@
 package sandwichManager;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
 
@@ -104,13 +105,14 @@ public class Ingredients {
     public String toString() {
         return "Ingredients: " +
                 "\nBread: " + bread +
-                "\nMeat: " + meat +
+                "\nMeat: " + getMeat().orElse(new ArrayList<>()) +
                 "\nExtra Meat: " + hasExtraMeat +
-                "\nCheese: " + cheese +
+                "\nCheese: " + getCheese().orElse(new ArrayList<>()) +
                 "\nExtra Cheese: " + hasExtraCheese +
-                "\nToppings: " + toppings +
-                "\nSauce:" + sauce +
+                "\nToppings: " + getToppings().orElse(new ArrayList<>()) +
+                "\nSauce:" + getSauce().orElse(new ArrayList<>()) +
                 "\nSauce On Side: " + sauceOnSide +
                 '\n';
     }
+
 }

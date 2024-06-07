@@ -193,6 +193,7 @@ public class Screen {
                 break;
             case "NO":
                 System.out.println("No meat, then.");
+                currentIngredients.setMeat(null);
                 cheeseScreen();
                 break;
             default:
@@ -306,6 +307,7 @@ public class Screen {
                 break;
             case "NO":
                 System.out.println("No cheese, then.");
+                currentIngredients.setCheese(null);
                 toppingsScreen();
                 break;
             default:
@@ -414,6 +416,8 @@ public class Screen {
                 break;
             case "NO":
                 System.out.println("No toppings, then.");
+                currentIngredients.setToppings(null);
+                sauceScreen();
                 break;
             default:
                 System.out.println("Not an option");
@@ -522,6 +526,7 @@ public class Screen {
                 break;
             case "NO":
                 System.out.println("And plain it is.");
+                currentIngredients.setSauce(null);
                 sandwichConfirmationScreen();
                 break;
             default:
@@ -833,6 +838,13 @@ public class Screen {
         switch (confirmInput.toUpperCase()){
             case "YES":
                 System.out.println("Confirming order...");
+                OrderReceiptFileManager.writeReceiptToFile(currentOrder);
+                System.out.println("Order done! Come back any time!");
+                currentOrder = null;
+                currentSandwich = null;
+                currentDrink = null;
+                currentChips = null;
+                homeScreen();
                 break;
             case "NO":
                 System.out.println("Deleting order...");

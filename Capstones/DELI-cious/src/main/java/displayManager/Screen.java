@@ -47,7 +47,7 @@ public class Screen {
 
         while (isEnabled) {
 
-           currentOrder = new Order();
+            currentOrder = new Order();
 
             System.out.println("What you want to add");
 
@@ -760,7 +760,56 @@ public class Screen {
 
     public void checkOutScreen() {
 
+        if (currentSandwich != null){
 
+            System.out.println("Here's your sandwich:");
+            System.out.println("BREAD: " + currentIngredients.getBread());
+
+            System.out.println("MEAT:");
+
+
+
+        }
+
+        if (currentDrink != null){
+
+            System.out.println("Here's your drink:");
+            System.out.println("SIZE: " + currentDrink.getDrinkSize());
+            System.out.println("DRINK TYPE: " + currentDrink.getDrinkType());
+
+        }
+
+        if (currentChips != null){
+
+            System.out.println("Here's your chips:");
+            System.out.println("CHIP TYPE: " + currentChips);
+
+        }
+
+        System.out.println("Here's your total:");
+
+        currentOrder.getOrderPrice(currentOrder);
+
+        System.out.println("Confirm order? YES/NO");
+
+        Scanner userInput = new Scanner(System.in);
+        String confirmInput = userInput.nextLine();
+
+        switch (confirmInput.toUpperCase()){
+            case "YES":
+                System.out.println("Confirming order...");
+                break;
+            case "NO":
+                System.out.println("Deleting order...");
+                currentOrder = null;
+                currentSandwich = null;
+                currentDrink = null;
+                currentChips = null;
+                orderScreen(true);
+                break;
+            default:
+                System.out.println("Not an option");
+        }
 
     }
 }

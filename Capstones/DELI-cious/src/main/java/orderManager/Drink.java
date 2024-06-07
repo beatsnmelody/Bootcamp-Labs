@@ -7,9 +7,6 @@ public class Drink {
     private boolean hasIce;
 
     public Drink(){
-        this.drinkSize = null;
-        this.drinkType = null;
-        this.hasIce = false;
     }
 
     public Drink(DrinkSize drinkSize, DrinkList drinkType, boolean hasIce) {
@@ -42,4 +39,12 @@ public class Drink {
         this.hasIce = hasIce;
     }
 
+    @Override
+    public String toString() {
+        return "Drink: " +
+                "Drink Size: " + drinkSize +
+                "\nDrink Type: " + drinkType +
+                "\nHas Ice: " + hasIce +
+                '\n';
+    }
 }

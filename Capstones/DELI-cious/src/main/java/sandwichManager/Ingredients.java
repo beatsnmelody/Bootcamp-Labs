@@ -19,16 +19,6 @@ public class Ingredients {
     private boolean sauceOnSide;
 
     public Ingredients() {
-
-        this.bread = null;
-        this.meat = null;
-        this.hasExtraMeat = false;
-        this.cheese = null;
-        this.hasExtraCheese = false;
-        this.toppings = null;
-        this.sauce = null;
-        this.sauceOnSide = false;
-
     }
 
     public Ingredients(Bread bread) {
@@ -110,5 +100,17 @@ public class Ingredients {
         this.sauceOnSide = sauceOnSide;
     }
 
-
+    @Override
+    public String toString() {
+        return "Ingredients: " +
+                "\nBread: " + bread +
+                "\nMeat: " + meat +
+                "\nExtra Meat: " + hasExtraMeat +
+                "\nCheese: " + cheese +
+                "\nExtra Cheese: " + hasExtraCheese +
+                "\nToppings: " + toppings +
+                "\nSauce:" + sauce +
+                "\nSauce On Side: " + sauceOnSide +
+                '\n';
+    }
 }

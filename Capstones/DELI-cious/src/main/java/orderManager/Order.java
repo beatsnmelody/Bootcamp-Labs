@@ -3,6 +3,7 @@ package orderManager;
 import sandwichManager.Sandwich;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Order {
 
@@ -14,12 +15,7 @@ public class Order {
     private LocalDateTime dateTimeOrdered;
 
     public Order (){
-        this.sandwich = null;
-        this.drink = null;
-        this.chips = null;
-        this.orderPrice = 0;
-        this.customerName = "";
-        this.dateTimeOrdered = null;
+
     }
 
     public Order(Sandwich sandwich, Drink drink, Chips chips, double orderPrice, String customerName, LocalDateTime dateTimeOrdered) {
@@ -52,16 +48,49 @@ public class Order {
         this.dateTimeOrdered = dateTimeOrdered;
     }
 
-    public Sandwich getSandwich() {
-        return sandwich;
+    public Order(Sandwich sandwich, Drink drink, Chips chips) {
+        this.sandwich = sandwich;
+        this.drink = drink;
+        this.chips = chips;
     }
 
-    public Drink getDrink() {
-        return drink;
+    public Order(Sandwich sandwich, Drink drink) {
+        this.sandwich = sandwich;
+        this.drink = drink;
     }
 
-    public Chips getChips() {
-        return chips;
+    public Order(Drink drink, Chips chips) {
+        this.drink = drink;
+        this.chips = chips;
+    }
+
+    public Order(Chips chips, Sandwich sandwich) {
+        this.chips = chips;
+        this.sandwich = sandwich;
+    }
+
+    public Order(Sandwich sandwich) {
+        this.sandwich = sandwich;
+    }
+
+    public Order(Drink drink) {
+        this.drink = drink;
+    }
+
+    public Order(Chips chips) {
+        this.chips = chips;
+    }
+
+    public Optional<Sandwich> getSandwich() {
+        return Optional.ofNullable(sandwich);
+    }
+
+    public Optional<Drink> getDrink() {
+        return Optional.ofNullable(drink);
+    }
+
+    public Optional<Chips> getChips() {
+        return Optional.ofNullable(chips);
     }
 
     public void setSandwich(Sandwich sandwich) {
@@ -92,7 +121,7 @@ public class Order {
         this.dateTimeOrdered = dateTimeOrdered;
     }
 
-    public double getOrderPrice(Order order){
+    public double getOrderPrice(Sandwich sandwich, Order order){
 
         orderPrice = 0;
         double drinkPrice = 0;
@@ -101,7 +130,7 @@ public class Order {
         boolean drinkOrdered = false;
         boolean sandwichOrdered = false;
 
-        if (order.getDrink() != null){
+        if (order.getDrink().isPresent()){
             drinkOrdered = true;
         }
 
@@ -123,16 +152,16 @@ public class Order {
 
         }
 
-        if (order.getChips() != null){
+        if (order.getChips().isPresent()){
             chipsPrice += 1.50;
         }
 
-        if (order.getSandwich() != null){
+        if (order.getSandwich().isPresent()){
             sandwichOrdered = true;
         }
 
         if (sandwichOrdered){
-            order.getSandwich().calculateSandwichCost(order.getSandwich());
+           sandwichPrice = sandwich.calculateSandwichCost(sandwich);
         }
 
         orderPrice = sandwichPrice + drinkPrice + chipsPrice;

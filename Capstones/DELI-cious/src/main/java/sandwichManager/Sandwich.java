@@ -7,8 +7,6 @@ public class Sandwich {
     private Ingredients ingredients;
 
     public Sandwich() {
-        this.size = null;
-        this.ingredients = null;
     }
 
     public Sandwich(Size size, Ingredients ingredients) {
@@ -82,4 +80,12 @@ public class Sandwich {
         return sandwichPrice;
     }
 
+    @Override
+    public String toString() {
+        return "Sandwich: " +
+                "\nSize: " + size +
+                "\nSandwich Ingredients: " + ingredients.toString() +
+                "\nTotal Cost Of Sandwich: " + sandwichPrice +
+                '\n';
+    }
 }

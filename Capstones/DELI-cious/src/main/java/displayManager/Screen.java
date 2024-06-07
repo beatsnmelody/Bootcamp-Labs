@@ -21,7 +21,11 @@ public class Screen {
 
             System.out.println("Welcome to DELI-cious!");
 
-            System.out.println("What do you want?");
+            System.out.println("What do you want? Type in a number.");
+            System.out.println("""
+                    1) NEW ORDER
+                    0) QUIT
+                    """);
 
             Scanner userInput = new Scanner(System.in);
 
@@ -32,7 +36,7 @@ public class Screen {
                 case 1:
                     orderScreen(true);
                     break;
-                case 2:
+                case 0:
                     System.exit(0);
                 default:
                     System.out.println("Not an option");
@@ -49,7 +53,14 @@ public class Screen {
 
             currentOrder = new Order();
 
-            System.out.println("What you want to add");
+            System.out.println("What item do you want to add? Type in a number.");
+            System.out.println("""
+                    1) SANDWICH
+                    2) DRINK
+                    3) CHIPS
+                    4) CHECKOUT
+                    0) QUIT ORDER
+                    """);
 
             Scanner userInput = new Scanner(System.in);
 
@@ -57,25 +68,33 @@ public class Screen {
 
             switch (orderInput) {
                 case 1:
-                    if (currentSandwich != null) {
-                    System.out.println("Sorry, you've already ordered a sandwich.");
-                    }else{
-                        sandwichSizeAndBreadScreen();
+                    if (currentOrder.getSandwich().isPresent()) {
+                        System.out.println("Sorry, you've already ordered a sandwich.");
+                        break;
                     }
+                        sandwichSizeAndBreadScreen();
                     break;
                 case 2:
+                    if (currentOrder.getDrink().isPresent()) {
+                        System.out.println("Sorry, you've already ordered a drink.");
+                        break;
+                    }
                     drinkScreen();
                     break;
                 case 3:
+                    if (currentOrder.getChips().isPresent()) {
+                        System.out.println("Sorry, you've already ordered chips.");
+                        break;
+                    }
                     chipsScreen();
                     break;
                 case 4:
-                    if (currentOrder.getSandwich() != null || currentOrder.getDrink() != null || currentOrder.getChips() != null) {
+                    if (currentOrder.getSandwich().isPresent() || currentOrder.getDrink().isPresent() || currentOrder.getChips().isPresent()) {
                         checkOutScreen();
                         break;
-                    }else{
-                        System.out.println("Sorry, your order is empty, bud.");
                     }
+                        System.out.println("Sorry, your order is empty, bud.");
+
                     break;
                 case 0:
                     currentOrder = null;
@@ -98,7 +117,7 @@ public class Screen {
 
         System.out.println("Welcome to the greatest sandwich maker of all time!");
 
-        System.out.println("What size sandwich do you want?");
+        System.out.println("What size sandwich do you want? Type in a number.");
         System.out.println("""
                 4) 4-INCH
                 8) 8-INCH
@@ -129,7 +148,7 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("What kind of bread do you want?");
+        System.out.println("What kind of bread do you want? Type the full name of the bread.");
         System.out.println("""
                 WHITE
                 WHEAT
@@ -156,6 +175,8 @@ public class Screen {
                 System.out.println("Not an option");
         }
 
+        System.out.println(currentIngredients.getBread().toString() + " is your current bread.");
+
         meatScreen();
 
     }
@@ -164,7 +185,7 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("Do you want any meat? YES/NO");
+        System.out.println("Do you want any meat? (YES)/(NO)");
         String yesNoMeat = userInput.nextLine();
 
         switch (yesNoMeat.toUpperCase()) {
@@ -189,7 +210,7 @@ public class Screen {
 
         while (isEnabled) {
 
-            System.out.println("How about meat?");
+            System.out.println("How about meat? Type the full name of the meat.");
             System.out.println("""
                     STEAK
                     HAM
@@ -238,7 +259,7 @@ public class Screen {
 
             currentIngredients.setMeat(meatList);
 
-            System.out.println(currentIngredients.getMeat() + " are currently ordered.");
+            System.out.println(currentIngredients.getMeat().toString() + " are currently ordered.");
 
             System.out.println("Want any more kinds of meat? YES/NO");
             String yesNoToMultiple = userInput.nextLine();
@@ -255,7 +276,7 @@ public class Screen {
             }
         }
 
-        System.out.println("Do you want extra meat with your order?");
+        System.out.println("Do you want extra meat with your order? (YES)/(NO)");
         String extraMeatInput = userInput.nextLine();
 
         switch(extraMeatInput.toUpperCase()){
@@ -277,7 +298,7 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("Any cheese? YES/NO");
+        System.out.println("Any cheese? (YES)/(NO)");
         String yesNoCheese = userInput.nextLine();
 
         switch (yesNoCheese.toUpperCase()) {
@@ -302,7 +323,7 @@ public class Screen {
 
         while (isEnabled) {
 
-            System.out.println("How about cheese?");
+            System.out.println("How about cheese? Type the full name of the cheese.");
             System.out.println("""
                     AMERICAN
                     PROVOLONE
@@ -343,9 +364,9 @@ public class Screen {
 
             currentIngredients.setCheese(cheeseList);
 
-            System.out.println(currentIngredients.getCheese() + " are currently ordered.");
+            System.out.println(currentIngredients.getCheese().toString() + " are currently ordered.");
 
-            System.out.println("Want any more kinds of cheese? YES/NO");
+            System.out.println("Want any more kinds of cheese? (YES)/(NO)");
             String yesNoToMultiple = userInput.nextLine();
 
             switch (yesNoToMultiple.toUpperCase()){
@@ -361,7 +382,7 @@ public class Screen {
 
         }
 
-        System.out.println("Do you want extra cheese with your order?");
+        System.out.println("Do you want extra cheese with your order? (YES)/(NO)");
         String extraCheeseInput = userInput.nextLine();
 
         switch(extraCheeseInput.toUpperCase()){
@@ -385,7 +406,7 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("Any toppings? YES/NO");
+        System.out.println("Any toppings? (YES)/(NO)");
         String yesNoToppings = userInput.nextLine();
 
         switch(yesNoToppings.toUpperCase()){
@@ -408,7 +429,7 @@ public class Screen {
         Scanner userInput = new Scanner(System.in);
 
         while(isEnabled) {
-            System.out.println("How about toppings?");
+            System.out.println("How about toppings? Type the full name of the topping.");
             System.out.println("""
                     LETTUCE
                     PEPPERS
@@ -468,9 +489,9 @@ public class Screen {
 
             currentIngredients.setToppings(toppingsList);
 
-            System.out.println(currentIngredients.getToppings() + " are currently ordered.");
+            System.out.println(currentIngredients.getToppings().toString() + " are currently ordered.");
 
-            System.out.println("Do you want any more toppings? YES/NO");
+            System.out.println("Do you want any more toppings? (YES)/(NO)");
             String yesNoToMultiple = userInput.nextLine();
 
             switch (yesNoToMultiple.toUpperCase()){
@@ -493,7 +514,7 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("And last but not least, any sauce? YES/NO");
+        System.out.println("And last but not least, any sauce? (YES)/(NO)");
         String yesNoSauce = userInput.nextLine();
 
         switch(yesNoSauce.toUpperCase()){
@@ -518,7 +539,7 @@ public class Screen {
 
          while(isEnabled) {
 
-             System.out.println("How about topping that off with some sauce?");
+             System.out.println("How about topping that off with some sauce? Type the full name of the sauce.");
              System.out.println("""
                      MAYO
                      MUSTARD
@@ -565,9 +586,9 @@ public class Screen {
 
              currentIngredients.setSauce(sauceList);
 
-             System.out.println(currentIngredients.getSauce() + " are currently ordered.");
+             System.out.println(currentIngredients.getSauce().toString() + " are currently ordered.");
 
-             System.out.println("Do you want any more sauce?");
+             System.out.println("Do you want any more sauce? (YES)/(NO)");
              String yesNoToMultiple = userInput.nextLine();
 
              switch (yesNoToMultiple.toUpperCase()){
@@ -585,6 +606,20 @@ public class Screen {
 
          }
 
+        System.out.println("Do you want sauce on the side? (YES)/(NO)");
+        String yesNoToMultiple = userInput.nextLine();
+
+        switch (yesNoToMultiple.toUpperCase()){
+            case "YES":
+                System.out.println("Sauce on the side!");
+            case "NO":
+                System.out.println("Sauce on the sandwich it is!");
+                sandwichConfirmationScreen();
+                break;
+            default:
+                System.out.println("Not an option");
+        }
+
     }
 
     public void sandwichConfirmationScreen(){
@@ -595,6 +630,8 @@ public class Screen {
         Sandwich finishedSandwich = sandwichMaker.build(currentSandwich.getSize(), currentIngredients);
         currentOrder.setSandwich(finishedSandwich);
 
+        System.out.println("And your sandwich is done!");
+
         orderScreen(true);
 
     }
@@ -603,7 +640,9 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("What chips do you want?");
+        System.out.println("Some additional munchies with your order?");
+
+        System.out.println("What chips do you want? Type in the full name of your chip flavor.");
         System.out.println("""
                 PLAIN
                 BARBECUE
@@ -647,7 +686,9 @@ public class Screen {
 
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("What size do you want your drink?");
+        System.out.println("Want to quench your thirst?");
+
+        System.out.println("What size do you want your drink? Type in the full name of your drink size.");
         System.out.println("""
                 SMALL
                 MEDIUM
@@ -680,9 +721,9 @@ public class Screen {
 
         }
 
-        System.out.println("So, your drink size is: " + currentDrink.getDrinkSize());
+        System.out.println("So, your drink size is: " + currentDrink.getDrinkSize().toString());
 
-        System.out.println("Now, what kind of drink do you want?");
+        System.out.println("Now, what kind of drink do you want? Type in the full name of your chosen drink type.");
         System.out.println("""
                 COLA
                 DR FIZZ
@@ -731,7 +772,7 @@ public class Screen {
 
         System.out.println("So, the type of your drink is: " + currentDrink.getDrinkType());
 
-        System.out.println("Lastly, ice or no ice?");
+        System.out.println("Lastly, ice or no ice? (YES)/(NO)");
         System.out.println("""
                 ICE
                 NO ICE
@@ -763,34 +804,29 @@ public class Screen {
         if (currentSandwich != null){
 
             System.out.println("Here's your sandwich:");
-            System.out.println("BREAD: " + currentIngredients.getBread());
-
-            System.out.println("MEAT:");
-
-
+            System.out.println(currentSandwich.toString());
 
         }
 
         if (currentDrink != null){
 
             System.out.println("Here's your drink:");
-            System.out.println("SIZE: " + currentDrink.getDrinkSize());
-            System.out.println("DRINK TYPE: " + currentDrink.getDrinkType());
+            System.out.println(currentDrink.toString());
 
         }
 
         if (currentChips != null){
 
             System.out.println("Here's your chips:");
-            System.out.println("CHIP TYPE: " + currentChips);
+            System.out.println("CHIP TYPE: " + currentChips.toString());
 
         }
 
         System.out.println("Here's your total:");
 
-        currentOrder.getOrderPrice(currentOrder);
+        currentOrder.getOrderPrice(currentSandwich, currentOrder);
 
-        System.out.println("Confirm order? YES/NO");
+        System.out.println("Confirm order? (YES)/(NO)");
 
         Scanner userInput = new Scanner(System.in);
         String confirmInput = userInput.nextLine();

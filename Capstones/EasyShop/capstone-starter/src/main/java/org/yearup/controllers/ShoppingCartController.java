@@ -11,6 +11,7 @@ import org.yearup.data.ShoppingCartDao;
 import org.yearup.data.UserDao;
 import org.yearup.models.Product;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
 
 import java.security.Principal;
@@ -56,19 +57,26 @@ public class ShoppingCartController
         }
     }
 
+    // add a POST method to add a product to the cart - the url should be
+    // https://localhost:8080/cart/products/15 (15 is the productId to be added
+
     @PostMapping("products/{productId}")
-    public ResponseEntity<Void> addProduct(Principal principal, @PathVariable int productId, @RequestBody Product product)
+    public ResponseEntity<Void> addProduct(Principal principal, @PathVariable int productId)
     {
         try
         {
+
             // get the currently logged in username
             String userName = principal.getName();
             // find database user by userId
             User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+
+            getCart(principal);
 
             // adds product and then gets the shopping cart
-            shoppingCartDao.addProductToCart(productId, product);
-            getCart(principal);
+            shoppingCartDao.addProductToCart(userId, productId);
+
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         catch(Exception e)
@@ -77,8 +85,7 @@ public class ShoppingCartController
         }
     }
 
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be added
+
 
 
     // add a PUT method to update an existing product in the cart - the url should be

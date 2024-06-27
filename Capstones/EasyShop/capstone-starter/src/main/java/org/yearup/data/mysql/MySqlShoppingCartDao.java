@@ -7,6 +7,7 @@ import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,18 +35,39 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         try(Connection connection = getConnection();
             CallableStatement callableStatement = connection.prepareCall(query)) {
 
+            callableStatement.setInt(1, userId);
+
             ResultSet resultSet = callableStatement.executeQuery();
 
             while(resultSet.next()){
 
-                int product = resultSet.getInt("product_id");
+                int productId = resultSet.getInt("product_id");
                 int productQuantity = resultSet.getInt("quantity");
 
-                ShoppingCartItem item = cart.get(product);
+                String name = resultSet.getString("name");
+                BigDecimal price = resultSet.getBigDecimal("price");
+                int category = resultSet.getInt("category_id");
+                String desc = resultSet.getString("description");
+                String color = resultSet.getString("color");
+                int stock = resultSet.getInt("stock");
+                boolean isFeatured = resultSet.getBoolean("featured");
+                String url = resultSet.getString("image_url");
+
+                Product product = new Product(productId, name, price, category, desc, color, stock, isFeatured, url);
+
+                ShoppingCartItem item = new ShoppingCartItem();
+
+                item.setProduct(product);
+                item.setQuantity(productQuantity);
+                item.setDiscountPercent(BigDecimal.ZERO);
+
+                item.getLineTotal();
 
                 itemsInCart.put(productQuantity, item);
 
                 cart.setItems(itemsInCart);
+
+                cart.getTotal();
 
             }
 
@@ -57,14 +79,15 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
     @Override
-    public void addProductToCart(int productId, Product product){
+    public void addProductToCart(int userId, int productId){
 
-        String query = "{CALL AddProductToCart(?)}";
+        String query = "{CALL AddProductToCart(?, ?)}";
 
         try(Connection connection = getConnection();
             CallableStatement callableStatement = connection.prepareCall(query)){
 
-            callableStatement.setInt(1, productId);
+            callableStatement.setInt(1, userId);
+            callableStatement.setInt(2, productId);
 
             callableStatement.executeUpdate();
 

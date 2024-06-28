@@ -81,10 +81,6 @@ public class CategoriesController {
         try {
             var categoryToUpdate = categoryDao.getById(categoryId);
 
-            if (categoryToUpdate.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
-
             categoryDao.update(categoryId, category);
 
             return new ResponseEntity<>(HttpStatus.OK);
@@ -104,10 +100,6 @@ public class CategoriesController {
         // delete the category by id
         try {
             var categoryToDelete = categoryDao.getById(categoryId);
-
-            if (categoryToDelete.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
 
             categoryDao.delete(categoryId);
 

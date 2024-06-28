@@ -92,8 +92,47 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
 
+    @PutMapping("products/{productId}")
+    public ResponseEntity<Void> updateQuantity(Principal principal, @PathVariable int productId, @RequestBody ShoppingCartItem item){
+
+        try {
+
+            getCart(principal);
+
+            shoppingCartDao.updateQuantityOfItem(productId, item.getQuantity());
+
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        }catch(Exception e)
+
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+
+    }
+
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCart(Principal principal){
+
+        try {
+
+            // get the currently logged in username
+            String userName = principal.getName();
+            // find database user by userId
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+
+            shoppingCartDao.deleteCart(userId);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
 
 }
